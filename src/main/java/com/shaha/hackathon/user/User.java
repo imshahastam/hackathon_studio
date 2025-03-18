@@ -1,8 +1,14 @@
 package com.shaha.hackathon.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.shaha.hackathon.hackathon.model.Hackathon;
+import com.shaha.hackathon.user.roles.Role;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,4 +35,20 @@ public class User {
     @JsonProperty("last_name")
     @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_hackathons",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "hackathon_id")
+    )
+    private Set<Hackathon> hackathons = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER) // Загружать роли сразу
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 }

@@ -1,5 +1,6 @@
 package com.shaha.hackathon.hackathon.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shaha.hackathon.user.User;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,6 +56,9 @@ public class Hackathon {
     @JoinColumn(name = "organizer_id", nullable = false)
     @JsonProperty("organizer_id")
     private User organizer;
+
+    @ManyToMany(mappedBy = "hackathons")
+    private Set<User> participants = new HashSet<>();
 
     @PreUpdate
     protected void onUpdate() {

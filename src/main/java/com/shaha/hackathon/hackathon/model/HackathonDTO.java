@@ -5,6 +5,9 @@ import com.shaha.hackathon.user.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class HackathonDTO {
@@ -21,6 +24,7 @@ public class HackathonDTO {
 
     private String location;
     private Long organizerId;
+    private Set<Long> participantIds;
 
     public HackathonDTO(Hackathon hackathon) {
         this.name = hackathon.getName();
@@ -31,5 +35,8 @@ public class HackathonDTO {
         this.endDate = hackathon.getEndDate();
         this.location = hackathon.getLocation();
         this.organizerId = hackathon.getOrganizer().getId();
+        this.participantIds = hackathon.getParticipants().stream()
+                .map(User::getId)
+                .collect(Collectors.toSet());
     }
 }
