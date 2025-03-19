@@ -51,4 +51,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    public User(Long id, String username, String encode, String firstName, String lastName, Set<Role> roles) {}
 }
