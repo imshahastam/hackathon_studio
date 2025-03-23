@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shaha.hackathon.user.User;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,9 @@ public class HackathonDTO {
     private String location;
     private Long organizerId;
     private Set<Long> participantIds;
+    private String tags;
+    private BigDecimal prizeFund;
+    private String conditions;
 
     public HackathonDTO(Hackathon hackathon) {
         this.name = hackathon.getName();
@@ -38,5 +42,8 @@ public class HackathonDTO {
         this.participantIds = hackathon.getParticipants().stream()
                 .map(User::getId)
                 .collect(Collectors.toSet());
+        this.tags = hackathon.getTags();
+        this.prizeFund = hackathon.getPrizeFund();
+        this.conditions = hackathon.getConditions();
     }
 }

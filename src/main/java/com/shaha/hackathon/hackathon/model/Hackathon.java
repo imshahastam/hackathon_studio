@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,6 +60,14 @@ public class Hackathon {
 
     @ManyToMany(mappedBy = "hackathons")
     private Set<User> participants = new HashSet<>();
+
+    private String tags;
+
+    @Column(name = "prize_fund")
+    private BigDecimal prizeFund;
+
+    @Column(columnDefinition = "TEXT")
+    private String conditions;
 
     @PreUpdate
     protected void onUpdate() {
