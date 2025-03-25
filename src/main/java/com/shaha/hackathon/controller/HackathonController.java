@@ -2,9 +2,11 @@ package com.shaha.hackathon.controller;
 
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
+import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.CreateHackathonService;
 import com.shaha.hackathon.hackathon.service.GetHackathonsService;
 import com.shaha.hackathon.hackathon.service.RegisterUserToHackathonService;
+import com.shaha.hackathon.hackathon.service.UpdateHackathonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,15 @@ public class HackathonController {
     private final GetHackathonsService getHackathonsService;
     private final CreateHackathonService createHackathonService;
     private final RegisterUserToHackathonService registerUserToHackathonService;
+    private final UpdateHackathonService updateHackathonService;
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
-                               RegisterUserToHackathonService registerUserToHackathonService) {
+                               RegisterUserToHackathonService registerUserToHackathonService, UpdateHackathonService updateHackathonService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
         this.registerUserToHackathonService = registerUserToHackathonService;
+        this.updateHackathonService = updateHackathonService;
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -35,6 +39,11 @@ public class HackathonController {
     @GetMapping("/all")
     public ResponseEntity<List<HackathonDTO>> getHackathons() {
         return getHackathonsService.execute(null);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long id, @RequestBody Hackathon hackathon) {
+        return updateHackathonService.execute(new UpdateHackathonCommand(id, hackathon));
     }
 
     @PreAuthorize("hasRole('PARTICIPANT')")

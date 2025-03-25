@@ -70,7 +70,7 @@ public class Hackathon {
     private String conditions;
 
     @PreUpdate
-    protected void onUpdate() {
+    public void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
 }
