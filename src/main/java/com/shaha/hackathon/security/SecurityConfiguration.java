@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/hackathons/all").permitAll()
+                        .requestMatchers("/hackathons/{hackathonId}").permitAll()
                         .requestMatchers("/users/registration").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/hackathons/create").hasRole("ORGANIZER")
