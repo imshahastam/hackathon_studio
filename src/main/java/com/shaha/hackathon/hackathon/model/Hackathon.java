@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shaha.hackathon.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,12 @@ public class Hackathon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Hackathon name is required")
+    @Size(min = 3, max = 100, message = "Hackathon name must be between 3 and 100 characters")
     private String name;
+
+    @NotBlank(message = "Description is required")
+    @Size(min = 20, message = "Description must be at least 20 characters")
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -36,11 +42,15 @@ public class Hackathon {
     @Enumerated(EnumType.STRING)
     private HackathonType type; // ENUM
 
+    @NotNull(message = "Start date is required")
+    @FutureOrPresent(message = "Start date cannot be in the past")
     @JsonProperty("start_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
+    @NotNull(message = "End date is required")
+    @Future(message = "End date must be in the future")
     @JsonProperty("end_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "end_date")
@@ -63,9 +73,11 @@ public class Hackathon {
 
     private String tags;
 
+    @DecimalMin(value = "0.0", inclusive = false, message = "Prize fund must be greater than zero")
     @Column(name = "prize_fund")
     private BigDecimal prizeFund;
 
+    @NotBlank(message = "Conditions are required")
     @Column(columnDefinition = "TEXT")
     private String conditions;
 

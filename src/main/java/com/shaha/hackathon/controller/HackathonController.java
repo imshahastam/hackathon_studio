@@ -4,6 +4,7 @@ import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.*;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class HackathonController {
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping("/create")
-    public ResponseEntity<HackathonDTO> createHackathon(@RequestBody Hackathon hackathon) {
+    public ResponseEntity<HackathonDTO> createHackathon(@Valid @RequestBody Hackathon hackathon) {
         return createHackathonService.execute(hackathon);
     }
 
@@ -43,7 +44,7 @@ public class HackathonController {
     }
 
     @PutMapping("/{hackathonId}")
-    public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long hackathonId, @RequestBody Hackathon hackathon) {
+    public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long hackathonId, @Valid @RequestBody Hackathon hackathon) {
         return updateHackathonService.execute(new UpdateHackathonCommand(hackathonId, hackathon));
     }
 
