@@ -19,17 +19,20 @@ public class HackathonController {
     private final RegisterUserToHackathonService registerUserToHackathonService;
     private final UpdateHackathonService updateHackathonService;
     private final GetHackathonService getHackathonService;
+    private final GetMyHackathonsService getMyHackathonsService;
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
                                RegisterUserToHackathonService registerUserToHackathonService,
                                UpdateHackathonService updateHackathonService,
-                               GetHackathonService getHackathonService) {
+                               GetHackathonService getHackathonService,
+                               GetMyHackathonsService getMyHackathonsService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
         this.registerUserToHackathonService = registerUserToHackathonService;
         this.updateHackathonService = updateHackathonService;
         this.getHackathonService = getHackathonService;
+        this.getMyHackathonsService = getMyHackathonsService;
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -57,5 +60,10 @@ public class HackathonController {
     @PostMapping("/{hackathonId}/register/{userId}")
     public ResponseEntity<String> registerUserToHackathon(@PathVariable Long hackathonId, @PathVariable Long userId) {
         return registerUserToHackathonService.register(userId, hackathonId);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<HackathonDTO>> getHackathonsByOrganizerId() {
+        return getMyHackathonsService.execute(null);
     }
 }
