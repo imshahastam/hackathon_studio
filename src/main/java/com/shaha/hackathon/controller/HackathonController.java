@@ -20,19 +20,22 @@ public class HackathonController {
     private final UpdateHackathonService updateHackathonService;
     private final GetHackathonService getHackathonService;
     private final GetMyHackathonsService getMyHackathonsService;
+    private final DeleteHackathonService deleteHackathonService;
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
                                RegisterUserToHackathonService registerUserToHackathonService,
                                UpdateHackathonService updateHackathonService,
                                GetHackathonService getHackathonService,
-                               GetMyHackathonsService getMyHackathonsService) {
+                               GetMyHackathonsService getMyHackathonsService,
+                               DeleteHackathonService deleteHackathonService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
         this.registerUserToHackathonService = registerUserToHackathonService;
         this.updateHackathonService = updateHackathonService;
         this.getHackathonService = getHackathonService;
         this.getMyHackathonsService = getMyHackathonsService;
+        this.deleteHackathonService = deleteHackathonService;
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -46,13 +49,13 @@ public class HackathonController {
         return getHackathonsService.execute(null);
     }
 
-    @PutMapping("/{hackathonId}")
+    @PutMapping("/{hackathonId}/edit")
     public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long hackathonId, @Valid @RequestBody Hackathon hackathon) {
         return updateHackathonService.execute(new UpdateHackathonCommand(hackathonId, hackathon));
     }
 
     @GetMapping("/{hackathonId}")
-    public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long hackathonId) {
+    public ResponseEntity<HackathonDTO> getHackathonById(@PathVariable Long hackathonId) {
         return getHackathonService.execute(hackathonId);
     }
 
@@ -65,5 +68,10 @@ public class HackathonController {
     @GetMapping("/my")
     public ResponseEntity<List<HackathonDTO>> getHackathonsByOrganizerId() {
         return getMyHackathonsService.execute(null);
+    }
+
+    @DeleteMapping("/{hackathonId}")
+    public ResponseEntity<Void> deleteHackathonById(@PathVariable Long hackathonId) {
+        return deleteHackathonService.execute(hackathonId);
     }
 }
