@@ -4,6 +4,7 @@ import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.*;
+import com.shaha.hackathon.judge.models.Judge;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,7 @@ public class HackathonController {
     private final GetHackathonService getHackathonService;
     private final GetMyHackathonsService getMyHackathonsService;
     private final DeleteHackathonService deleteHackathonService;
+    private final GetHackathonsJudgesService getHackathonsJudgesService;
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
@@ -28,7 +30,8 @@ public class HackathonController {
                                UpdateHackathonService updateHackathonService,
                                GetHackathonService getHackathonService,
                                GetMyHackathonsService getMyHackathonsService,
-                               DeleteHackathonService deleteHackathonService) {
+                               DeleteHackathonService deleteHackathonService,
+                               GetHackathonsJudgesService getHackathonsJudgesService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
         this.registerUserToHackathonService = registerUserToHackathonService;
@@ -36,6 +39,7 @@ public class HackathonController {
         this.getHackathonService = getHackathonService;
         this.getMyHackathonsService = getMyHackathonsService;
         this.deleteHackathonService = deleteHackathonService;
+        this.getHackathonsJudgesService = getHackathonsJudgesService;
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -73,5 +77,10 @@ public class HackathonController {
     @DeleteMapping("/{hackathonId}")
     public ResponseEntity<Void> deleteHackathonById(@PathVariable Long hackathonId) {
         return deleteHackathonService.execute(hackathonId);
+    }
+
+    @GetMapping("/{hackathonId}/judges")
+    public ResponseEntity<List<Judge>> getHackathonsJudges(@PathVariable Long hackathonId) {
+        return getHackathonsJudgesService.execute(hackathonId);
     }
 }

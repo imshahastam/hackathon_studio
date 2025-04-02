@@ -3,6 +3,8 @@ package com.shaha.hackathon.hackathon.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.shaha.hackathon.judge.models.Competence;
+import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -71,7 +73,13 @@ public class Hackathon {
     @ManyToMany(mappedBy = "hackathons")
     private Set<User> participants = new HashSet<>();
 
-    private String tags;
+    @ManyToMany
+    @JoinTable(
+            name = "hackathon_competences",
+            joinColumns = @JoinColumn(name = "hackathon_id"),
+            inverseJoinColumns = @JoinColumn(name = "competence_id")
+    )
+    private Set<Competence> tags = new HashSet<>();
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Prize fund must be greater than zero")
     @Column(name = "prize_fund")
@@ -80,6 +88,14 @@ public class Hackathon {
     @NotBlank(message = "Conditions are required")
     @Column(columnDefinition = "TEXT")
     private String conditions;
+
+    @ManyToMany
+    @JoinTable(
+            name = "hackathon_judges",
+            joinColumns = @JoinColumn(name = "hackathon_id"),
+            inverseJoinColumns = @JoinColumn(name = "judge_id")
+    )
+    private Set<Judge> judges = new HashSet<>();
 
     @PreUpdate
     public void onUpdate() {

@@ -1,6 +1,7 @@
 package com.shaha.hackathon.hackathon.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.shaha.hackathon.judge.models.Competence;
 import com.shaha.hackathon.user.User;
 import lombok.Data;
 
@@ -26,7 +27,7 @@ public class HackathonDTO {
     private String location;
     private Long organizerId;
     private Set<Long> participantIds;
-    private String tags;
+    private Set<String> tags;
     private BigDecimal prizeFund;
     private String conditions;
 
@@ -42,7 +43,9 @@ public class HackathonDTO {
         this.participantIds = hackathon.getParticipants().stream()
                 .map(User::getId)
                 .collect(Collectors.toSet());
-        this.tags = hackathon.getTags();
+        this.tags = hackathon.getTags().stream()
+                .map(Competence::getName)
+                .collect(Collectors.toSet());
         this.prizeFund = hackathon.getPrizeFund();
         this.conditions = hackathon.getConditions();
     }
