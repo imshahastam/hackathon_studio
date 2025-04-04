@@ -1,10 +1,13 @@
 package com.shaha.hackathon.controller;
 
+import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.*;
 import com.shaha.hackathon.judge.models.Judge;
+import com.shaha.hackathon.judge.models.dto.InviteJudgeRequest;
+import com.shaha.hackathon.judge.services.InvitationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +26,7 @@ public class HackathonController {
     private final GetMyHackathonsService getMyHackathonsService;
     private final DeleteHackathonService deleteHackathonService;
     private final GetHackathonsJudgesService getHackathonsJudgesService;
+    private final InvitationService invitationService;
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
@@ -31,7 +35,8 @@ public class HackathonController {
                                GetHackathonService getHackathonService,
                                GetMyHackathonsService getMyHackathonsService,
                                DeleteHackathonService deleteHackathonService,
-                               GetHackathonsJudgesService getHackathonsJudgesService) {
+                               GetHackathonsJudgesService getHackathonsJudgesService,
+                               InvitationService invitationService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
         this.registerUserToHackathonService = registerUserToHackathonService;
@@ -40,6 +45,7 @@ public class HackathonController {
         this.getMyHackathonsService = getMyHackathonsService;
         this.deleteHackathonService = deleteHackathonService;
         this.getHackathonsJudgesService = getHackathonsJudgesService;
+        this.invitationService = invitationService;
     }
 
     @PreAuthorize("hasRole('ORGANIZER')")
@@ -82,5 +88,15 @@ public class HackathonController {
     @GetMapping("/{hackathonId}/judges")
     public ResponseEntity<List<Judge>> getHackathonsJudges(@PathVariable Long hackathonId) {
         return getHackathonsJudgesService.execute(hackathonId);
+    }
+
+    @PostMapping("/{hackathonId}/invite-judge")
+    public ResponseEntity<MessageResponse> inviteJudge(
+            @PathVariable Long hackathonId,
+            @RequestBody InviteJudgeRequest request
+    ) {
+        invitationService.sendInvitation(hackathonId, request.getJudgeId());
+
+        return ResponseEntity.ok(new MessageResponse("Invitation sent."));
     }
 }

@@ -38,4 +38,25 @@ public class GlobalExceptionHandler {
                         "errors", errors
                 ));
     }
+
+    @ExceptionHandler(AlreadyInvitedException.class)
+    public ResponseEntity<MessageResponse> handleAlreadyInvited(AlreadyInvitedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new MessageResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<MessageResponse> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new MessageResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<MessageResponse> handleGeneric(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new MessageResponse("Что-то пошло не так. Попробуйте позже."));
+    }
 }
