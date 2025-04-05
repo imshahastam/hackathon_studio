@@ -7,6 +7,7 @@ import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.*;
 import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.judge.models.dto.InviteJudgeRequest;
+import com.shaha.hackathon.judge.models.dto.JudgeDTO;
 import com.shaha.hackathon.judge.services.InvitationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -86,7 +87,7 @@ public class HackathonController {
     }
 
     @GetMapping("/{hackathonId}/judges")
-    public ResponseEntity<List<Judge>> getHackathonsJudges(@PathVariable Long hackathonId) {
+    public ResponseEntity<List<JudgeDTO>> getHackathonsJudges(@PathVariable Long hackathonId) {
         return getHackathonsJudgesService.execute(hackathonId);
     }
 

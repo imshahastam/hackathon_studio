@@ -57,6 +57,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<MessageResponse> handleGeneric(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new MessageResponse("Что-то пошло не так. Попробуйте позже."));
+                .body(new MessageResponse(ex.getMessage()));
     }
 }

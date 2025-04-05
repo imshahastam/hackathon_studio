@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/users/registration").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/hackathons/create").hasRole("ORGANIZER")
+                        .requestMatchers("/judges").hasRole("JUDGE")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

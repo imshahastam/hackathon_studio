@@ -1,5 +1,6 @@
 package com.shaha.hackathon.judge.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.user.User;
@@ -36,6 +37,7 @@ public class Judge {
     String bio;
     String linkedin;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "judges")
     Set<Hackathon> hackathons = new HashSet<>();
 }

@@ -1,9 +1,8 @@
 package com.shaha.hackathon.hackathon.service;
 
 import com.shaha.hackathon.Query;
-import com.shaha.hackathon.hackathon.model.Hackathon;
-import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.judge.models.Judge;
+import com.shaha.hackathon.judge.models.dto.JudgeDTO;
 import com.shaha.hackathon.repo.HackathonRepository;
 import com.shaha.hackathon.repo.JudgeRepository;
 import org.springframework.http.HttpStatus;
@@ -11,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
-public class GetHackathonsJudgesService implements Query<Long, List<Judge>> {
+public class GetHackathonsJudgesService implements Query<Long, List<JudgeDTO>> {
     private final JudgeRepository judgeRepository;
     private final HackathonRepository hackathonRepository;
 
@@ -25,12 +22,13 @@ public class GetHackathonsJudgesService implements Query<Long, List<Judge>> {
     }
 
     @Override
-    public ResponseEntity<List<Judge>> execute(Long hackathonId) {
+    public ResponseEntity<List<JudgeDTO>> execute(Long hackathonId) {
         if (!hackathonRepository.existsById(Math.toIntExact(hackathonId))) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         List<Judge> judges = judgeRepository.findByHackathonId(hackathonId);
-        return ResponseEntity.ok(judges);
+        List<JudgeDTO> judgeDTOS = judges.stream().map(JudgeDTO::new).toList();
+        return ResponseEntity.ok(judgeDTOS);
     }
 }
