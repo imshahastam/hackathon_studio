@@ -4,6 +4,7 @@ import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
+import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
 import com.shaha.hackathon.hackathon.service.*;
 import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.judge.models.dto.InviteJudgeRequest;
@@ -56,7 +57,7 @@ public class HackathonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<HackathonDTO>> getHackathons() {
+    public ResponseEntity<List<HackathonCardDTO>> getHackathons() {
         return getHackathonsService.execute(null);
     }
 
