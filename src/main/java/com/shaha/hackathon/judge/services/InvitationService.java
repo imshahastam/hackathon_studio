@@ -7,17 +7,34 @@ import com.shaha.hackathon.judge.models.InvitationStatus;
 import com.shaha.hackathon.judge.models.JudgeInvitation;
 import com.shaha.hackathon.judge.models.dto.RespondToInvitationRequest;
 import com.shaha.hackathon.repo.JudgeInvitationRepository;
+import com.shaha.hackathon.repo.JudgeRepository;
+import com.shaha.hackathon.repo.UserRepository;
+import com.shaha.hackathon.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class InvitationService {
     private final JudgeInvitationRepository invitationRepository;
     private final JudgeService judgeService;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final JudgeRepository judgeRepository;
 
-    public InvitationService(JudgeInvitationRepository invitationRepository, JudgeService judgeService) {
+    public InvitationService(JudgeInvitationRepository invitationRepository,
+                             JudgeService judgeService,
+                             UserRepository userRepository,
+                             UserService userService,
+                             JudgeRepository judgeRepository) {
         this.invitationRepository = invitationRepository;
         this.judgeService = judgeService;
+        this.userRepository = userRepository;
+        this.userService = userService;
+        this.judgeRepository = judgeRepository;
     }
 
     public void sendInvitation(Long hackathonId, Long judgeId) {
@@ -48,6 +65,15 @@ public class InvitationService {
             return judgeService.addJudgeToHackathon(invitation.getHackathonId(), invitation.getJudgeId());
         }
         return ResponseEntity.ok(new MessageResponse("Invitation have been DECLINED"));
+    }
+
+    public ResponseEntity<List<JudgeInvitation>> getAllJudgeInvitations() {
+        Long judgeId = judgeRepository.findByUserId(userService.getCurrentUser().getId());
+        List<JudgeInvitation> judgeInvitations = invitationRepository.findAll().stream()
+                .filter(judgeInvitation -> Objects.equals(judgeInvitation.getJudgeId(), judgeId))
+                .toList();
+
+        return ResponseEntity.ok(judgeInvitations);
     }
 
 }

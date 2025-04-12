@@ -20,10 +20,10 @@ public class JudgeController {
         this.invitationService = invitationService;
     }
 
-//    @GetMapping("/me/invitations")
-//    public ResponseEntity<List<JudgeInvitation>> getAllMyInvitations() {
-//
-//    }
+    @GetMapping("/me/invitations")
+    public ResponseEntity<List<JudgeInvitation>> getAllJudgeInvitations() {
+        return invitationService.getAllJudgeInvitations();
+    }
 
     @PostMapping("/invitations/{invitationId}/respond")
     public ResponseEntity<MessageResponse> respondToInvitation(@PathVariable Long invitationId, @RequestBody RespondToInvitationRequest respond) {
