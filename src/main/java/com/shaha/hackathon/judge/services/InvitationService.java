@@ -4,6 +4,7 @@ import com.shaha.hackathon.exceptions.AccessDeniedException;
 import com.shaha.hackathon.exceptions.AlreadyInvitedException;
 import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.judge.models.InvitationStatus;
+import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.judge.models.JudgeInvitation;
 import com.shaha.hackathon.judge.models.dto.RespondToInvitationRequest;
 import com.shaha.hackathon.repo.JudgeInvitationRepository;
@@ -68,12 +69,11 @@ public class InvitationService {
     }
 
     public ResponseEntity<List<JudgeInvitation>> getAllJudgeInvitations() {
-        Long judgeId = judgeRepository.findByUserId(userService.getCurrentUser().getId());
-        List<JudgeInvitation> judgeInvitations = invitationRepository.findAll().stream()
-                .filter(judgeInvitation -> Objects.equals(judgeInvitation.getJudgeId(), judgeId))
-                .toList();
+        Long currentUserId = userService.getCurrentUser().getId();
+        Judge judge = judgeRepository.findByUserId(currentUserId);
+        List<JudgeInvitation> invitations = invitationRepository.findByJudgeId(judge.getId());
 
-        return ResponseEntity.ok(judgeInvitations);
+        return ResponseEntity.ok(invitations);
     }
 
 }
