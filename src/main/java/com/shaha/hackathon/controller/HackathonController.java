@@ -87,7 +87,7 @@ public class HackathonController {
         return deleteHackathonService.execute(hackathonId);
     }
 
-    @GetMapping("/{hackathonId}/judges")
+    @GetMapping("/{hackathonId}/hack-judges")
     public ResponseEntity<List<JudgeDTO>> getHackathonsJudges(@PathVariable Long hackathonId) {
         return getHackathonsJudgesService.execute(hackathonId);
     }
