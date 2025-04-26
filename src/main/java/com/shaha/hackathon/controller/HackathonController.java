@@ -102,8 +102,8 @@ public class HackathonController {
         return ResponseEntity.ok(new MessageResponse("Invitation sent."));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteJudgeFromHackathon() {
-        return ResponseEntity.ok();
-    }
+//    @DeleteMapping
+//    public ResponseEntity<Void> deleteJudgeFromHackathon() {
+//        return ResponseEntity.ok();
+//    }
 }
