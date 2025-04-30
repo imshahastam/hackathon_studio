@@ -5,8 +5,8 @@ import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
+import com.shaha.hackathon.hackathon.model.dto.HackathonCreateDTO;
 import com.shaha.hackathon.hackathon.service.*;
-import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.judge.models.dto.InviteJudgeRequest;
 import com.shaha.hackathon.judge.models.dto.JudgeDTO;
 import com.shaha.hackathon.judge.services.InvitationService;
@@ -52,8 +52,8 @@ public class HackathonController {
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping("/create")
-    public ResponseEntity<HackathonDTO> createHackathon(@Valid @RequestBody Hackathon hackathon) {
-        return createHackathonService.execute(hackathon);
+    public ResponseEntity<HackathonDTO> createHackathon(@Valid @RequestBody HackathonCreateDTO hackathonDTO) {
+        return createHackathonService.execute(hackathonDTO);
     }
 
     @GetMapping("/all")
