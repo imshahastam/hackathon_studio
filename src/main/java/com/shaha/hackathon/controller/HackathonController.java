@@ -52,7 +52,7 @@ public class HackathonController {
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping("/create")
-    public ResponseEntity<HackathonDTO> createHackathon(@Valid @RequestBody HackathonCreateDTO hackathonDTO) {
+    public ResponseEntity<HackathonCardDTO> createHackathon(@Valid @RequestBody HackathonCreateDTO hackathonDTO) {
         return createHackathonService.execute(hackathonDTO);
     }
 
