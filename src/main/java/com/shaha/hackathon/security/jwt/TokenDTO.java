@@ -1,7 +1,5 @@
 package com.shaha.hackathon.security.jwt;
 
-import com.shaha.hackathon.judge.models.InvitationStatus;
-
 public class TokenDTO {
     private String token;
     private String username;

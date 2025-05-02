@@ -78,7 +78,7 @@ public class HackathonController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<List<HackathonDTO>> getHackathonsByOrganizerId() {
+    public ResponseEntity<List<HackathonCardDTO>> getHackathonsByOrganizerId() {
         return getMyHackathonsService.execute(null);
     }
 
