@@ -4,7 +4,7 @@ import com.shaha.hackathon.Query;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
 import com.shaha.hackathon.repo.HackathonRepository;
-import com.shaha.hackathon.user.UserService;
+import com.shaha.hackathon.user.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -3,12 +3,10 @@ package com.shaha.hackathon.hackathon.service;
 import com.shaha.hackathon.Command;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.repo.HackathonRepository;
-import com.shaha.hackathon.repo.UserRepository;
 import com.shaha.hackathon.user.User;
-import com.shaha.hackathon.user.UserService;
+import com.shaha.hackathon.user.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.webauthn.management.UserCredentialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

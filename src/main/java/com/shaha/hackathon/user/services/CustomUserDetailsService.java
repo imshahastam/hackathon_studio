@@ -1,6 +1,8 @@
-package com.shaha.hackathon.user;
+package com.shaha.hackathon.user.services;
 
 import com.shaha.hackathon.repo.UserRepository;
+import com.shaha.hackathon.user.CustomUserDetails;
+import com.shaha.hackathon.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,14 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNameOfRole()))
-                .collect(Collectors.toList());
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                authorities
-        );
+        return new CustomUserDetails(user);
     }
 }

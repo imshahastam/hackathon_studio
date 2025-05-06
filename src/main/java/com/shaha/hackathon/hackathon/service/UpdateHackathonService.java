@@ -6,7 +6,7 @@ import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.UpdateHackathonCommand;
 import com.shaha.hackathon.repo.HackathonRepository;
 import com.shaha.hackathon.user.User;
-import com.shaha.hackathon.user.UserService;
+import com.shaha.hackathon.user.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

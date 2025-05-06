@@ -1,6 +1,5 @@
 package com.shaha.hackathon.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.user.roles.Role;
@@ -53,4 +52,12 @@ public class User {
     private Set<Role> roles;
 
     public User(Long id, String username, String encode, String firstName, String lastName, Set<Role> roles) {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

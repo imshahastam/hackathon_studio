@@ -3,7 +3,7 @@ package com.shaha.hackathon.user.services;
 import com.shaha.hackathon.Query;
 import com.shaha.hackathon.repo.UserRepository;
 import com.shaha.hackathon.user.User;
-import com.shaha.hackathon.user.UserDTO;
+import com.shaha.hackathon.user.dto.UserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

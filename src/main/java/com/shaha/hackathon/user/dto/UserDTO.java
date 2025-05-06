@@ -1,13 +1,13 @@
-package com.shaha.hackathon.user;
+package com.shaha.hackathon.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shaha.hackathon.hackathon.model.Hackathon;
+import com.shaha.hackathon.user.User;
 import com.shaha.hackathon.user.roles.Role;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 

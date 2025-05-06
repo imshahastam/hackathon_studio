@@ -1,15 +1,15 @@
 package com.shaha.hackathon.controller;
-
-import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.security.jwt.JwtUtil;
 import com.shaha.hackathon.security.jwt.TokenDTO;
+import com.shaha.hackathon.user.CustomUserDetails;
+import com.shaha.hackathon.user.User;
+import com.shaha.hackathon.user.dto.LoginRequestDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,16 +27,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody com.shaha.hackathon.user.User user) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginRequestDTO loginDTO) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                user.getUsername(),
-                user.getPassword()
-        );
+                loginDTO.getUsername(), loginDTO.getPassword());
 
         Authentication authentication = manager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwtToken = JwtUtil.generateToken((User) authentication.getPrincipal());
-        return ResponseEntity.ok().body(new TokenDTO(jwtToken, user.getUsername()));
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String jwtToken = JwtUtil.generateToken(userDetails.getUser());
+
+        return ResponseEntity.ok(new TokenDTO(jwtToken, userDetails.getUsername()));
     }
 }

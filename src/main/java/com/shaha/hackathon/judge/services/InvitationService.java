@@ -1,6 +1,5 @@
 package com.shaha.hackathon.judge.services;
 
-import com.shaha.hackathon.exceptions.AccessDeniedException;
 import com.shaha.hackathon.exceptions.AlreadyInvitedException;
 import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.judge.models.InvitationStatus;
@@ -10,13 +9,11 @@ import com.shaha.hackathon.judge.models.dto.RespondToInvitationRequest;
 import com.shaha.hackathon.repo.JudgeInvitationRepository;
 import com.shaha.hackathon.repo.JudgeRepository;
 import com.shaha.hackathon.repo.UserRepository;
-import com.shaha.hackathon.user.UserService;
+import com.shaha.hackathon.user.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class InvitationService {

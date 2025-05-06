@@ -1,7 +1,7 @@
 package com.shaha.hackathon.controller;
 
-import com.shaha.hackathon.user.UserDTO;
-import com.shaha.hackathon.user.UserService;
+import com.shaha.hackathon.user.dto.UserDTO;
+import com.shaha.hackathon.user.services.UserService;
 import com.shaha.hackathon.user.services.GetAllUsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

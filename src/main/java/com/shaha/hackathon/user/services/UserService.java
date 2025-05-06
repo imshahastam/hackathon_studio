@@ -1,7 +1,9 @@
-package com.shaha.hackathon.user;
+package com.shaha.hackathon.user.services;
 
 import com.shaha.hackathon.repo.RoleRepository;
 import com.shaha.hackathon.repo.UserRepository;
+import com.shaha.hackathon.user.User;
+import com.shaha.hackathon.user.dto.UserDTO;
 import com.shaha.hackathon.user.roles.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 @Slf4j
