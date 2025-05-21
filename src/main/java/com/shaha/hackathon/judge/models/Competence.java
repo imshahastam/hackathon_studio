@@ -1,5 +1,6 @@
 package com.shaha.hackathon.judge.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +27,10 @@ public class Competence {
     String name;
 
     @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
     private Set<Hackathon> hackathons = new HashSet<>();
 
+    @ManyToMany(mappedBy = "competences")
+    @JsonIgnore
+    Set<Judge> judges = new HashSet<>();
 }

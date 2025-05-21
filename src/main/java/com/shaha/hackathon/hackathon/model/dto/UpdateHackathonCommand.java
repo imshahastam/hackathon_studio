@@ -32,7 +32,8 @@ public class UpdateHackathonCommand {
     @JsonProperty("end_date")
     LocalDateTime endDate;
     String location;
-    List<Long> tags;
+    List<Long> tagsId;
+    List<String> newTags;
     BigDecimal prizeFund;
     String conditions;
 }

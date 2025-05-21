@@ -40,4 +40,13 @@ public class Judge {
     @JsonIgnore
     @ManyToMany(mappedBy = "judges")
     Set<Hackathon> hackathons = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "judge_competences",
+            joinColumns = @JoinColumn(name = "judge_id"),
+            inverseJoinColumns = @JoinColumn(name = "competence_id")
+    )
+    Set<Competence> competences = new HashSet<>();
+
 }

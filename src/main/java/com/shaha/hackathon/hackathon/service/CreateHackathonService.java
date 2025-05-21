@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CreateHackathonService implements Command<HackathonCreateDTO, HackathonCardDTO> {
@@ -46,9 +47,32 @@ public class CreateHackathonService implements Command<HackathonCreateDTO, Hacka
         hackathon.setConditions(hackathonDTO.getConditions());
         hackathon.setOrganizer(organizer);
 
-        // получаем компетенции по ID
-        List<Competence> competenceList = competenceRepository.findAllById(hackathonDTO.getTagsId());
-        hackathon.setTags(new HashSet<>(competenceList));
+        Set<Competence> allTags = new HashSet<>();
+
+        // 1. Добавляем существующие тэги
+        if (hackathonDTO.getTagsId() != null && !hackathonDTO.getTagsId().isEmpty()) {
+            List<Competence> existingTags = competenceRepository.findAllById(hackathonDTO.getTagsId());
+            allTags.addAll(existingTags);
+        }
+
+        // 2. Добавляем новые тэги
+        if (hackathonDTO.getNewTags() != null && !hackathonDTO.getNewTags().isEmpty()) {
+            for (String tagName : hackathonDTO.getNewTags()) {
+                // Проверка на дубликат в базе (можно убрать, если точно уникальные)
+                boolean exists = competenceRepository.existsByName(tagName);
+                if (!exists) {
+                    Competence newTag = new Competence();
+                    newTag.setName(tagName);
+                    Competence saved = competenceRepository.save(newTag);
+                    allTags.add(saved);
+                } else {
+                    // если тэг с таким именем есть — добавим его
+                    competenceRepository.findByName(tagName).ifPresent(allTags::add);
+                }
+            }
+        }
+
+        hackathon.setTags(allTags);
 
         Hackathon saved = hackathonRepository.save(hackathon);
         return ResponseEntity.status(HttpStatus.CREATED).body(new HackathonCardDTO(saved));

@@ -2,12 +2,14 @@ package com.shaha.hackathon.hackathon.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shaha.hackathon.judge.models.Competence;
+import com.shaha.hackathon.judge.models.dto.TagDTO;
 import com.shaha.hackathon.user.User;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class HackathonDTO {
     private String location;
     private Long organizerId;
     private Set<Long> participantIds;
-    private Set<String> tags;
+    private List<TagDTO> tags;
     private BigDecimal prizeFund;
     private String conditions;
 
@@ -44,8 +46,8 @@ public class HackathonDTO {
                 .map(User::getId)
                 .collect(Collectors.toSet());
         this.tags = hackathon.getTags().stream()
-                .map(Competence::getName)
-                .collect(Collectors.toSet());
+                .map(TagDTO::new)
+                .toList();
         this.prizeFund = hackathon.getPrizeFund();
         this.conditions = hackathon.getConditions();
     }

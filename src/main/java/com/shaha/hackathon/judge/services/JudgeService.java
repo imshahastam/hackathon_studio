@@ -3,11 +3,17 @@ package com.shaha.hackathon.judge.services;
 import com.shaha.hackathon.exceptions.AlreadyInvitedException;
 import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.hackathon.model.Hackathon;
+import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
+import com.shaha.hackathon.judge.models.Competence;
 import com.shaha.hackathon.judge.models.Judge;
+import com.shaha.hackathon.judge.models.dto.JudgeCardDTO;
 import com.shaha.hackathon.repo.HackathonRepository;
 import com.shaha.hackathon.repo.JudgeRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class JudgeService {
@@ -34,5 +40,11 @@ public class JudgeService {
         hackathon.getJudges().add(judge);
         hackathonRepository.save(hackathon);
         return ResponseEntity.ok(new MessageResponse("Judge added to Hackathon"));
+    }
+
+    public ResponseEntity<List<JudgeCardDTO>> getAllJudges() {
+        List<Judge> judges = judgeRepository.findAll();
+        List<JudgeCardDTO> judgeCardDTOS = judges.stream().map(JudgeCardDTO::new).toList();
+        return ResponseEntity.status(HttpStatus.OK).body(judgeCardDTOS);
     }
 }

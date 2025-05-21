@@ -3,6 +3,7 @@ package com.shaha.hackathon.controller;
 import com.shaha.hackathon.exceptions.MessageResponse;
 import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
+import com.shaha.hackathon.hackathon.model.dto.HackathonIdDTO;
 import com.shaha.hackathon.hackathon.model.dto.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
 import com.shaha.hackathon.hackathon.model.dto.HackathonCreateDTO;
@@ -62,7 +63,7 @@ public class HackathonController {
     }
 
     @PutMapping("/{hackathonId}/edit")
-    public ResponseEntity<HackathonDTO> updateHackathon(@PathVariable Long hackathonId, @Valid @RequestBody UpdateHackathonCommand dto) {
+    public ResponseEntity<HackathonIdDTO> updateHackathon(@PathVariable Long hackathonId, @Valid @RequestBody UpdateHackathonCommand dto) {
         return updateHackathonService.execute(hackathonId, dto);
     }
 

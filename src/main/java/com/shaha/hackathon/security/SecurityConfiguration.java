@@ -42,6 +42,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/hackathons/all").permitAll()
                         .requestMatchers("/users/registration").permitAll()
+                        .requestMatchers("/tags/all").permitAll()
+                        .requestMatchers("/judges/all").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/hackathons/create").hasRole("ORGANIZER")
                         .requestMatchers("/hackathons/{hackathonId}").permitAll()

@@ -37,6 +37,7 @@ public class HackathonCreateDTO {
 
     String location;
     List<Long> tagsId;
+    List<String> newTags;
     BigDecimal prizeFund;
     String conditions;
 
