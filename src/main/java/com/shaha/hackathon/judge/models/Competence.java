@@ -33,4 +33,8 @@ public class Competence {
     @ManyToMany(mappedBy = "competences")
     @JsonIgnore
     Set<Judge> judges = new HashSet<>();
+
+    public Competence(String name) {
+        this.name = name;
+    }
 }

@@ -1,6 +1,7 @@
 package com.shaha.hackathon.controller;
 
 import com.shaha.hackathon.user.dto.UserDTO;
+import com.shaha.hackathon.user.dto.UserRegistrationRequest;
 import com.shaha.hackathon.user.services.UserService;
 import com.shaha.hackathon.user.services.GetAllUsersService;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registerNewUser(@RequestBody UserDTO user) {
-        return userService.registerNewUserService(user);
+    public ResponseEntity<?> registerNewUser(@RequestBody UserRegistrationRequest request) {
+        return userService.registerNewUserService(request);
     }
 
     @GetMapping("/all")

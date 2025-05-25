@@ -1,9 +1,14 @@
 package com.shaha.hackathon.user.services;
 
+import com.shaha.hackathon.judge.models.Competence;
+import com.shaha.hackathon.judge.models.Judge;
+import com.shaha.hackathon.judge.models.dto.JudgeRegistrationDTO;
+import com.shaha.hackathon.judge.services.SaveNewAndExistingTagsService;
+import com.shaha.hackathon.repo.JudgeRepository;
 import com.shaha.hackathon.repo.RoleRepository;
 import com.shaha.hackathon.repo.UserRepository;
 import com.shaha.hackathon.user.User;
-import com.shaha.hackathon.user.dto.UserDTO;
+import com.shaha.hackathon.user.dto.UserRegistrationRequest;
 import com.shaha.hackathon.user.roles.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,32 +25,54 @@ import java.util.stream.Collectors;
 public class UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final JudgeRepository judgeRepository;
     private final PasswordEncoder encoder;
+    private final SaveNewAndExistingTagsService tagsResolveService;
 
     public UserService(RoleRepository roleRepository,
                        UserRepository userRepository,
-                       PasswordEncoder encoder) {
+                       JudgeRepository judgeRepository,
+                       PasswordEncoder encoder,
+                       SaveNewAndExistingTagsService tagsResolveService) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.judgeRepository = judgeRepository;
         this.encoder = encoder;
+        this.tagsResolveService = tagsResolveService;
     }
 
-    public ResponseEntity<String> registerNewUserService(UserDTO userDTO) {
-        Set<Role> roles = userDTO.getRoles().stream()
+    public ResponseEntity<String> registerNewUserService(UserRegistrationRequest request) {
+        Set<Role> roles = request.getRoles().stream()
                 .map(roleName -> roleRepository.findByNameOfRole(roleName)
                         .orElseThrow(() -> new RuntimeException("Роль не найдена: " + roleName)))
                 .collect(Collectors.toSet());
 
         User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(encoder.encode(userDTO.getPassword()));
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
+        user.setUsername(request.getUsername());
+        user.setPassword(encoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setRoles(roles);
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        return ResponseEntity.ok("Success");
+        // 2. Если роль JUDGE, создаём Judge и связываем
+        if (request.getRoles().contains("JUDGE") && request.getJudge() != null) {
+            JudgeRegistrationDTO judgeDTO = request.getJudge();
+            Judge judge = new Judge();
+            judge.setUser(savedUser);
+            judge.setCompany(judgeDTO.getCompany());
+            judge.setWorkExperience(judgeDTO.getWorkExperience());
+            judge.setBio(judgeDTO.getBio());
+            judge.setLinkedin(judgeDTO.getLinkedin());
+
+            Set<Competence> competences = tagsResolveService.execute(judgeDTO.getTagsId(), judgeDTO.getNewTags());
+            judge.setCompetences(competences);
+
+            judgeRepository.save(judge);
+        }
+
+        return ResponseEntity.ok().build();
 
     }
 

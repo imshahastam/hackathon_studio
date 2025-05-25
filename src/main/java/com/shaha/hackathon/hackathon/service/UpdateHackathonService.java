@@ -7,6 +7,7 @@ import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.dto.HackathonIdDTO;
 import com.shaha.hackathon.hackathon.model.dto.UpdateHackathonCommand;
 import com.shaha.hackathon.judge.models.Competence;
+import com.shaha.hackathon.judge.services.SaveNewAndExistingTagsService;
 import com.shaha.hackathon.repo.CompetenceRepository;
 import com.shaha.hackathon.repo.HackathonRepository;
 import com.shaha.hackathon.user.User;
@@ -26,13 +27,16 @@ public class UpdateHackathonService {
     private final HackathonRepository hackathonRepository;
     private final UserService userService;
     private final CompetenceRepository competenceRepository;
+    private final SaveNewAndExistingTagsService tagsResolveService;
 
     public UpdateHackathonService(HackathonRepository hackathonRepository,
                                   UserService userService,
-                                  CompetenceRepository competenceRepository) {
+                                  CompetenceRepository competenceRepository,
+                                  SaveNewAndExistingTagsService tagsResolveService) {
         this.hackathonRepository = hackathonRepository;
         this.userService = userService;
         this.competenceRepository = competenceRepository;
+        this.tagsResolveService = tagsResolveService;
     }
 
     public ResponseEntity<HackathonIdDTO> execute(Long id, UpdateHackathonCommand dto) {
