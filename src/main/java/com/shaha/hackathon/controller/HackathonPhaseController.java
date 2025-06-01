@@ -1,7 +1,10 @@
 package com.shaha.hackathon.controller;
 
+import com.shaha.hackathon.hackathon.model.dto.HackathonIdDTO;
 import com.shaha.hackathon.hackathon.model.dto.HackathonPhaseDTO;
+import com.shaha.hackathon.hackathon.model.dto.UpdateHackathonCommand;
 import com.shaha.hackathon.hackathon.service.HackathonPhaseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +29,17 @@ public class HackathonPhaseController {
     @GetMapping
     public ResponseEntity<List<HackathonPhaseDTO>> getTimeline(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(phaseService.getTimeline(hackathonId));
+    }
+
+    @DeleteMapping("/{phaseId}")
+    public ResponseEntity<Void> deletePhaseById(@PathVariable Long hackathonId, @PathVariable Long phaseId) {
+        return phaseService.deletePhase(hackathonId, phaseId);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updatePhases(@PathVariable Long hackathonId,
+                                          @RequestBody List<HackathonPhaseDTO> dtos) {
+        phaseService.updatePhases(hackathonId, dtos);
+        return ResponseEntity.ok(Map.of("message", "Phases updated"));
     }
 }
