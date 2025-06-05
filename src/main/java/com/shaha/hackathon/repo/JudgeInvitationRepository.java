@@ -8,4 +8,6 @@ import java.util.List;
 public interface JudgeInvitationRepository extends JpaRepository<JudgeInvitation, Long> {
     boolean existsByHackathonIdAndJudgeId(Long hackathonId, Long judgeId);
     List<JudgeInvitation> findByJudgeId(Long judgeId);
+
+    List<JudgeInvitation> findByHackathonId(Long hackathonId);
 }

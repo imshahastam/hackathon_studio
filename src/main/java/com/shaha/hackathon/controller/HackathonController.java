@@ -72,12 +72,6 @@ public class HackathonController {
         return getHackathonService.execute(hackathonId);
     }
 
-    @PreAuthorize("hasRole('PARTICIPANT')")
-    @PostMapping("/{hackathonId}/register/{userId}")
-    public ResponseEntity<String> registerUserToHackathon(@PathVariable Long hackathonId, @PathVariable Long userId) {
-        return registerUserToHackathonService.register(userId, hackathonId);
-    }
-
     @GetMapping("/my")
     public ResponseEntity<List<HackathonCardDTO>> getHackathonsByOrganizerId() {
         return getMyHackathonsService.execute(null);

@@ -73,4 +73,8 @@ public class InvitationService {
         return ResponseEntity.ok(invitations);
     }
 
+    public List<JudgeInvitation> getInvitationsByHackathonId(Long hackathonId) {
+        return invitationRepository.findByHackathonId(hackathonId);
+    }
+
 }
