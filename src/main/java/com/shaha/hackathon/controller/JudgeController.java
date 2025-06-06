@@ -6,6 +6,7 @@ import com.shaha.hackathon.judge.models.InvitationStatus;
 import com.shaha.hackathon.judge.models.JudgeInvitation;
 import com.shaha.hackathon.judge.models.dto.JudgeCardDTO;
 import com.shaha.hackathon.judge.models.dto.JudgeInvitationDTO;
+import com.shaha.hackathon.judge.models.dto.JudgeInvitationRequestDTO;
 import com.shaha.hackathon.judge.models.dto.RespondToInvitationRequest;
 import com.shaha.hackathon.judge.services.InvitationService;
 import com.shaha.hackathon.judge.services.JudgeService;
@@ -34,7 +35,7 @@ public class JudgeController {
     }
 
     @GetMapping("/me/invitations")
-    public ResponseEntity<List<JudgeInvitation>> getAllJudgeInvitations() {
+    public ResponseEntity<List<JudgeInvitationRequestDTO>> getAllJudgeInvitations() {
         return invitationService.getAllJudgeInvitations();
     }
 

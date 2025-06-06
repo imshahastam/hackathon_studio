@@ -1,7 +1,6 @@
 package com.shaha.hackathon.controller;
 
 import com.shaha.hackathon.exceptions.MessageResponse;
-import com.shaha.hackathon.hackathon.model.Hackathon;
 import com.shaha.hackathon.hackathon.model.HackathonDTO;
 import com.shaha.hackathon.hackathon.model.dto.HackathonIdDTO;
 import com.shaha.hackathon.hackathon.model.dto.UpdateHackathonCommand;
@@ -23,7 +22,6 @@ import java.util.List;
 public class HackathonController {
     private final GetHackathonsService getHackathonsService;
     private final CreateHackathonService createHackathonService;
-    private final RegisterUserToHackathonService registerUserToHackathonService;
     private final UpdateHackathonService updateHackathonService;
     private final GetHackathonService getHackathonService;
     private final GetMyHackathonsService getMyHackathonsService;
@@ -33,7 +31,6 @@ public class HackathonController {
 
     public HackathonController(GetHackathonsService getHackathonsService,
                                CreateHackathonService createHackathonService,
-                               RegisterUserToHackathonService registerUserToHackathonService,
                                UpdateHackathonService updateHackathonService,
                                GetHackathonService getHackathonService,
                                GetMyHackathonsService getMyHackathonsService,
@@ -42,7 +39,6 @@ public class HackathonController {
                                InvitationService invitationService) {
         this.getHackathonsService = getHackathonsService;
         this.createHackathonService = createHackathonService;
-        this.registerUserToHackathonService = registerUserToHackathonService;
         this.updateHackathonService = updateHackathonService;
         this.getHackathonService = getHackathonService;
         this.getMyHackathonsService = getMyHackathonsService;
@@ -96,9 +92,4 @@ public class HackathonController {
 
         return ResponseEntity.ok(new MessageResponse("Invitation sent."));
     }
-
-//    @DeleteMapping
-//    public ResponseEntity<Void> deleteJudgeFromHackathon() {
-//        return ResponseEntity.ok();
-//    }
 }

@@ -2,10 +2,14 @@ package com.shaha.hackathon.judge.services;
 
 import com.shaha.hackathon.exceptions.AlreadyInvitedException;
 import com.shaha.hackathon.exceptions.MessageResponse;
+import com.shaha.hackathon.hackathon.model.Hackathon;
+import com.shaha.hackathon.hackathon.model.dto.HackathonForJudgeInvitationDTO;
 import com.shaha.hackathon.judge.models.InvitationStatus;
 import com.shaha.hackathon.judge.models.Judge;
 import com.shaha.hackathon.judge.models.JudgeInvitation;
+import com.shaha.hackathon.judge.models.dto.JudgeInvitationRequestDTO;
 import com.shaha.hackathon.judge.models.dto.RespondToInvitationRequest;
+import com.shaha.hackathon.repo.HackathonRepository;
 import com.shaha.hackathon.repo.JudgeInvitationRepository;
 import com.shaha.hackathon.repo.JudgeRepository;
 import com.shaha.hackathon.repo.UserRepository;
@@ -14,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvitationService {
@@ -22,17 +27,20 @@ public class InvitationService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final JudgeRepository judgeRepository;
+    private final HackathonRepository hackathonRepository;
 
     public InvitationService(JudgeInvitationRepository invitationRepository,
                              JudgeService judgeService,
                              UserRepository userRepository,
                              UserService userService,
-                             JudgeRepository judgeRepository) {
+                             JudgeRepository judgeRepository,
+                             HackathonRepository hackathonRepository) {
         this.invitationRepository = invitationRepository;
         this.judgeService = judgeService;
         this.userRepository = userRepository;
         this.userService = userService;
         this.judgeRepository = judgeRepository;
+        this.hackathonRepository = hackathonRepository;
     }
 
     public void sendInvitation(Long hackathonId, Long judgeId) {
@@ -65,10 +73,20 @@ public class InvitationService {
         return ResponseEntity.ok(new MessageResponse("Invitation have been DECLINED"));
     }
 
-    public ResponseEntity<List<JudgeInvitation>> getAllJudgeInvitations() {
+    public ResponseEntity<List<JudgeInvitationRequestDTO>> getAllJudgeInvitations() {
         Long currentUserId = userService.getCurrentUser().getId();
         Judge judge = judgeRepository.findByUserId(currentUserId);
-        List<JudgeInvitation> invitations = invitationRepository.findByJudgeId(judge.getId());
+        List<JudgeInvitationRequestDTO> invitations = invitationRepository.findByJudgeId(judge.getId())
+                .stream()
+                .map(invitation -> new JudgeInvitationRequestDTO(
+                        invitation.getId(),
+                        invitation.getHackathonId(),
+                        mapHackathonToDTO(invitation.getHackathonId()), // Предположим, у вас есть этот метод
+                        invitation.getJudgeId(),
+                        invitation.getStatus(),
+                        invitation.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(invitations);
     }
@@ -76,5 +94,18 @@ public class InvitationService {
     public List<JudgeInvitation> getInvitationsByHackathonId(Long hackathonId) {
         return invitationRepository.findByHackathonId(hackathonId);
     }
+
+    private HackathonForJudgeInvitationDTO mapHackathonToDTO(Long hackathonId) {
+        Hackathon hackathon = hackathonRepository.findById(Math.toIntExact(hackathonId))
+                .orElseThrow(() -> new RuntimeException("Hackathon not found"));
+
+        return new HackathonForJudgeInvitationDTO(
+                hackathon.getName(),
+                hackathon.getType(),
+                hackathon.getStartDate(),
+                hackathon.getLocation()
+        );
+    }
+
 
 }

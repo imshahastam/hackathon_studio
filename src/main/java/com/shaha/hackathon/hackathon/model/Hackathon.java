@@ -44,14 +44,14 @@ public class Hackathon {
     private HackathonType type; // ENUM
 
     @NotNull(message = "Start date is required")
-    @FutureOrPresent(message = "Start date cannot be in the past")
+    //@FutureOrPresent(message = "Start date cannot be in the past")
     @JsonProperty("start_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @NotNull(message = "End date is required")
-    @Future(message = "End date must be in the future")
+    //@Future(message = "End date must be in the future")
     @JsonProperty("end_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "end_date")
