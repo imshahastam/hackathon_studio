@@ -72,6 +72,17 @@ public class TeamService {
         return ResponseEntity.notFound().build();
     }
 
+    public ResponseEntity<List<TeamInfoDTO>> getMyTeams() {
+        Long currentUserId = userService.getCurrentUser().getId();
+        List<Team> teams = teamRepository.findAllByUserId(currentUserId);
+
+        List<TeamInfoDTO> result = teams.stream()
+                .map(TeamInfoDTO::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    }
+
     public void joinTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new RuntimeException("Team not found"));
@@ -92,6 +103,19 @@ public class TeamService {
         }
 
         team.getMembers().add(user);
+        teamRepository.save(team);
+    }
+
+    public void leaveTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+        User user = userService.getCurrentUser();
+
+        if (team.getLeader().equals(user)) {
+            throw new RuntimeException("Leader cannot leave the team. You can delete the team instead.");
+        }
+
+        team.getMembers().remove(user);
         teamRepository.save(team);
     }
 

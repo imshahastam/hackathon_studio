@@ -79,19 +79,6 @@ public class TeamInvitationService {
         invitationRepository.save(invitation);
     }
 
-    public void leaveTeam(Long teamId) {
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
-        User user = userService.getCurrentUser();
-
-        if (team.getLeader().equals(user)) {
-            throw new RuntimeException("Leader cannot leave the team. You can delete the team instead.");
-        }
-
-        team.getMembers().remove(user);
-        teamRepository.save(team);
-    }
-
     public List<TeamInvitationDTO> getUserPendingInvites() {
         Long userId = userService.getCurrentUser().getId();
         List<TeamInvitation> teamInvitations = invitationRepository.findByInvitedIdAndStatus(userId, InvitationStatus.PENDING);

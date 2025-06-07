@@ -36,7 +36,8 @@ public class TeamController {
         return ResponseEntity.ok("Joined team successfully");
     }
 
-    @GetMapping("/hackathon/{hackathonId}")
+    //front done
+    @GetMapping("/{hackathonId}/teams")
     public ResponseEntity<List<HackathonTeamInfoDTO>> getTeams(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(teamService.getTeamsByHackathon(hackathonId));
     }
@@ -55,12 +56,20 @@ public class TeamController {
         return ResponseEntity.ok("Invitation " + (accept ? "accepted" : "rejected"));
     }
 
+    //front done
+    @GetMapping("/my")
+    public ResponseEntity<List<TeamInfoDTO>> getMyTeams() {
+        return teamService.getMyTeams();
+    }
+
+    //front done
     @PostMapping("/{teamId}/leave")
     public ResponseEntity<String> leaveTeam(@PathVariable Long teamId) {
-        teamInvitationService.leaveTeam(teamId);
+        teamService.leaveTeam(teamId);
         return ResponseEntity.ok("You left the team");
     }
 
+    //front done
     @DeleteMapping("/{teamId}")
     public ResponseEntity<String> deleteTeam(@PathVariable Long teamId) {
         teamService.deleteTeam(teamId);
@@ -72,7 +81,7 @@ public class TeamController {
         return ResponseEntity.ok(teamInvitationService.getUserPendingInvites());
     }
 
-    //get team's details
+    //front done (team details)
     @GetMapping("/{teamId}")
     public ResponseEntity<TeamInfoDTO> getTeamById(@PathVariable Long teamId) {
         return teamService.getTeam(teamId);
