@@ -37,7 +37,7 @@ public class TeamController {
     }
 
     //front done
-    @GetMapping("/{hackathonId}/teams")
+    @GetMapping("/hackathon/{hackathonId}")
     public ResponseEntity<List<HackathonTeamInfoDTO>> getTeams(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(teamService.getTeamsByHackathon(hackathonId));
     }
@@ -56,7 +56,7 @@ public class TeamController {
         return ResponseEntity.ok("Invitation " + (accept ? "accepted" : "rejected"));
     }
 
-    //front done
+    //front done - participant's teams
     @GetMapping("/my")
     public ResponseEntity<List<TeamInfoDTO>> getMyTeams() {
         return teamService.getMyTeams();

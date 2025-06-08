@@ -13,4 +13,6 @@ public interface JudgeRepository extends JpaRepository<Judge, Long> {
     List<Judge> findByHackathonId(@Param("hackathonId") Long hackathonId);
 
     Judge findByUserId(Long userId);
+
+    boolean existsByUser_IdAndHackathons_Id(Long userId, Long hackathonId);
 }

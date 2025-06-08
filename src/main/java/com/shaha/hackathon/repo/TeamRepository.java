@@ -18,5 +18,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     List<Team> findAllByUserId(@Param("userId") Long userId);
 
     List<Team> findAllByHackathonId(Long hackathonId);
+
+    boolean existsByIdAndMembers_Id(Long id, Long id1);
 }
 

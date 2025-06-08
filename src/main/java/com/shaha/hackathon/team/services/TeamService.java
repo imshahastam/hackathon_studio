@@ -58,8 +58,12 @@ public class TeamService {
                 .map(team -> new HackathonTeamInfoDTO(
                         team.getId(),
                         team.getName(),
-                        team.getLeader().getFullName(), // Предполагается, что метод getFullName() уже есть
-                        team.getMembers().size()
+                        team.getLeader().getId(),
+                        team.getLeader().getFullName(),
+                        team.getMembers().size(),
+                        team.getMembers().stream()
+                                .map(User::getId)
+                                .collect(Collectors.toList()) // <-- тут исправлено
                 ))
                 .collect(Collectors.toList());
     }

@@ -1,6 +1,7 @@
 package com.shaha.hackathon.user.services;
 
 import com.shaha.hackathon.hackathon.model.Hackathon;
+import com.shaha.hackathon.hackathon.model.dto.HackathonCardDTO;
 import com.shaha.hackathon.hackathon.model.dto.HackathonParticipantDTO;
 import com.shaha.hackathon.judge.models.Competence;
 import com.shaha.hackathon.judge.models.Judge;
@@ -119,5 +120,15 @@ public class UserService {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(result);
+    }
+
+    public List<HackathonCardDTO> getHackathonsByUserId() {
+        Long userId = getCurrentUser().getId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        return user.getHackathons().stream()
+                .map(HackathonCardDTO::new)
+                .collect(Collectors.toList());
     }
 }
